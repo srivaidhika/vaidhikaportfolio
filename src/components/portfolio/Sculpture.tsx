@@ -17,7 +17,7 @@ export default function Sculpture({ interactive = false, className = "" }: { int
       try {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       } catch {
-        el.dataset.fallback = "1";
+        el.dataset["fallback"] = "1";
         return;
       }
       const styles = getComputedStyle(document.documentElement);
@@ -54,7 +54,7 @@ export default function Sculpture({ interactive = false, className = "" }: { int
       ring.rotation.x = Math.PI / 2.4;
       group.add(ring);
 
-      const base = (geo.attributes.position.array as Float32Array).slice();
+      const base = (geo.getAttribute("position").array as Float32Array).slice();
       const resize = () => {
         const { width, height } = el.getBoundingClientRect();
         renderer.setSize(width, height, false);
@@ -95,12 +95,12 @@ export default function Sculpture({ interactive = false, className = "" }: { int
         group.rotation.x += (target.y * 0.4 + spin.x + scroll * 0.4 - group.rotation.x) * 0.06;
         inner.rotation.z -= reduce ? 0 : 0.01;
         distort *= 0.96;
-        const pos = geo.attributes.position.array as Float32Array;
+        const pos = geo.getAttribute("position").array as Float32Array;
         for (let i = 0; i < pos.length; i += 3) {
           const n = 1 + Math.sin(t * 3 + i) * 0.03 + Math.sin(i * 1.7 + t * 6) * 0.18 * distort;
-          pos[i] = base[i] * n; pos[i + 1] = base[i + 1] * n; pos[i + 2] = base[i + 2] * n;
+          pos[i] = base[i]! * n; pos[i + 1] = base[i + 1]! * n; pos[i + 2] = base[i + 2]! * n;
         }
-        geo.attributes.position.needsUpdate = true;
+        geo.getAttribute("position").needsUpdate = true;
         wire.geometry.dispose();
         wire.geometry = new THREE.WireframeGeometry(geo);
         renderer.render(scene, camera);

@@ -64,7 +64,7 @@ function Index() {
 
         // parallax type
         gsap.utils.toArray<HTMLElement>("[data-speed]").forEach((el) => {
-          gsap.to(el, { yPercent: Number(el.dataset.speed) * -40, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.to(el, { yPercent: Number(el.dataset["speed"]) * -40, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
         });
 
         // line reveals
@@ -76,7 +76,7 @@ function Index() {
         gsap.utils.toArray<HTMLElement>("[data-mask]").forEach((el) => {
           gsap.fromTo(el, { clipPath: "inset(40% 20% 40% 20%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.out", scrollTrigger: { trigger: el, start: "top 90%", end: "top 30%", scrub: true } });
           const img = el.querySelector("img");
-          if (img && el.dataset.mask === "color") gsap.fromTo(img, { filter: "grayscale(1)", scale: 1.2 }, { filter: "grayscale(0)", scale: 1, scrollTrigger: { trigger: el, start: "top 80%", end: "center 40%", scrub: true } });
+          if (img && el.dataset["mask"] === "color") gsap.fromTo(img, { filter: "grayscale(1)", scale: 1.2 }, { filter: "grayscale(0)", scale: 1, scrollTrigger: { trigger: el, start: "top 80%", end: "center 40%", scrub: true } });
         });
 
         // annotations
@@ -151,7 +151,7 @@ function Cursor() {
 }
 
 function Nav({ chapter, progress }: { chapter: number; progress: number }) {
-  const [n, label] = CHAPTERS[chapter];
+  const [n, label] = CHAPTERS[chapter] ?? CHAPTERS[0];
   return (
     <>
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50 mix-blend-difference text-paper">
